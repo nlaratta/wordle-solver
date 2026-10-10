@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Compile
+        run: mkdir -p out && javac -d out src/*.java test/*.java
+      - name: Test
+        run: java -cp out FeedbackTest
+      - name: Solve a word
+        run: java -cp out WordleSolver --word crane --seed 1
